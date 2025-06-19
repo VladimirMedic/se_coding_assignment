@@ -1,0 +1,15 @@
+# Build output
+test_event_monitor
+test_event_monitor.exe
+
+# Object files
+*.o
+*.obj
+
+
+# Test output
+*.log
+*.out
+
+# Editor and IDE files
+.vscode/
