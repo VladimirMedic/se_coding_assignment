@@ -44,6 +44,7 @@ void test_single_rising_edge() {
     init_gpio_event_monitor(0xFFFFFFFF);  // Monitor all gpio's
 
     trigger_gpio_isr(0x01);  // GPIO0: 0 -> 1
+    assert(gpio_counter == 1);
 
     /*Reset the counter and report count*/
     simulate_check_counter_task(NULL);
@@ -57,7 +58,9 @@ void test_single_falling_edge() {
     init_gpio_event_monitor(0xFFFFFFFF);  // Monitor all gpio's
 
     trigger_gpio_isr(0x01);  // GPIO0: 0 -> 1
+    assert(gpio_counter == 1);
     trigger_gpio_isr(0x00);  // GPIO0: 1 -> 0
+    assert(gpio_counter == 1);
    
     /*Reset the counter and report count*/
     simulate_check_counter_task(NULL);
@@ -71,6 +74,7 @@ void test_multiple_rising_edges() {
     init_gpio_event_monitor(0xFFFFFFFF);  // Monitor all gpio's
 
     trigger_gpio_isr(0x01010101);  // GPIO0,8,16,24: 0 -> 1
+    assert(gpio_counter == 4);
 
     /*Reset the counter and report count*/
     simulate_check_counter_task(NULL);
@@ -83,7 +87,9 @@ void test_multiple_rising_edges_repeated() {
     init_gpio_event_monitor(0xFFFFFFFF);  // Monitor all gpio's
 
     trigger_gpio_isr(0x01010101);  // GPIO0,8,16,24: 0 -> 1
+    assert(gpio_counter == 4);
     trigger_gpio_isr(0x01010101);  // GPIO0,8,16,24: 0 -> 1, should ne no change
+    assert(gpio_counter == 4);
 
     /*Reset the counter and report count*/
     simulate_check_counter_task(NULL);
@@ -96,7 +102,9 @@ void test_multiple_rising_edges_sequential() {
     init_gpio_event_monitor(0xFFFFFFFF);  // Monitor all gpio's
 
     trigger_gpio_isr(0x01010101);  // GPIO0,8,16,24: 0 -> 1
+    assert(gpio_counter == 4);
     trigger_gpio_isr(0x02020202);  // GPIO0,8,16,24: 1 -> 0 GPIO1,9,17,25: 0 -> 1
+    assert(gpio_counter == 8);
 
     /*Reset the counter and report count*/
     simulate_check_counter_task(NULL);
@@ -109,6 +117,7 @@ void test_multiple_rising_edges_with_mask() {
     init_gpio_event_monitor(0x0000FFFF);  // Monitor lower part of gpio
 
     trigger_gpio_isr(0x01010101);  // GPIO0,8,16,24: 0 -> 1, but we are monitoring only lower part
+    assert(gpio_counter == 2);
 
     /*Reset the counter and report count*/
     simulate_check_counter_task(NULL);
@@ -121,6 +130,7 @@ void test_monitor_single_pin() {
     init_gpio_event_monitor(0x00000008);  // Monitor only GPIO3
 
     trigger_gpio_isr(0xFF);  // GPIO0-7: 0 -> 1
+    assert(gpio_counter == 1);
 
     /*Reset the counter and report count*/
     simulate_check_counter_task(NULL);
