@@ -25,6 +25,9 @@ void report_event_count(uint32_t count)
 */
 void init_gpio_event_monitor(uint32_t bit_mask)
 {
+	rtos_mutex_lock();
+	gpio_counter = 0;
+	rtos_mutex_unlock();
 	gpio_pin_mask = bit_mask;
 	gpio_state = gpio_read_input();
 	gpio_register_callback(gpio_change_callback);
